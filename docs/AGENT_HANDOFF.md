@@ -8,7 +8,7 @@
 - GitHub：hendasheng/selected-dimensions-blender-addon。
 - 唯一版本来源：selected_dimensions/blender_manifest.toml 的 version。
 - 当前版本：0.2.0，迁移为 Blender Extension。0.1.0 为历史 Legacy Add-on。
-- main 与 v0.1.0 标签均已推送；标签触发了发布流程，但尚未核实 Actions 的最终状态或 Release 资产。
+- main 与 v0.2.0 标签均已推送；GitHub 自动发布完成，已确认 0.2.0 安装包下载返回 HTTP 200。历史 v0.1.0 标签保持不动。
 - 头图来自用户提供的中英文图片，已放入 docs/images/ 并分别引用。
 - 本地仓库目录名称必须保持 selected-dimensions-blender-addon，不再创建带 -git 后缀的并行副本。
 
@@ -79,4 +79,4 @@ GitHub Actions 校验标签版本，上传工作流构建产物，并创建/更�
 - 在各自隔离的本地扩展仓库中，使用 package_install_files 安装 ZIP、启用 bl_ext.sd_extension_test.selected_dimensions、执行功能测试并卸载，全部通过。
 - 测试覆盖清单版本/网站/维护者、命名空间、中英文、坐标、单位、实例、默认状态和重复启停。
 - scripts/test_package.py 验证 ZIP 根结构、清单与源码一致及错误标签拒绝；已通过。
-- 自动发布工作流新增包结构验证；发布状态待推送后确认。
+- 自动发布工作流新增包结构验证；已推送 v0.2.0 并确认 Release 安装包可下载。
