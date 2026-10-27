@@ -4,7 +4,7 @@
 
 Blender extension that displays the length, width and height of selected objects and collection instances in the 3D View.
 
-[中文文档](README_CN.md)
+[显示选中物体尺寸 · 中文文档](README_CN.md)
 
 ## Features
 

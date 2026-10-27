@@ -1,6 +1,6 @@
-# Selected Dimensions
+# 显示选中物体尺寸
 
-![选中物体尺寸](docs/images/selected-dimensions-blender-addon-cn.png)
+![显示选中物体尺寸](docs/images/selected-dimensions-blender-addon-cn.png)
 
 Blender 扩展：在三维视图中显示选中物体和集合实例的长、宽、高。
 

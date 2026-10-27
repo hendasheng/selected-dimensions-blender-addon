@@ -4,7 +4,7 @@
 
 ## 仓库与当前状态
 
-- 名称：Selected Dimensions。
+- 英文名称：Selected Dimensions；用户确定的中文名称：显示选中物体尺寸。中文 README 使用该中文标题；英文名称、插件标识和仓库名保持不变。
 - GitHub：hendasheng/selected-dimensions-blender-addon。
 - 唯一版本来源：selected_dimensions/blender_manifest.toml 的 version。
 - 当前版本：0.2.0，迁移为 Blender Extension。0.1.0 为历史 Legacy Add-on。
