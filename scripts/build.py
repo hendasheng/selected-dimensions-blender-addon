@@ -1,26 +1,26 @@
-"""Build an installable ZIP using the version in bl_info (standard library only)."""
+"""Build a Blender Extension ZIP from its manifest (Python 3.11+)."""
 import argparse
-import ast
 from pathlib import Path
+import tomllib
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def build(tag=None):
-    source = ROOT / "selected_dimensions" / "__init__.py"
-    tree = ast.parse(source.read_text(encoding="utf-8-sig"))
-    info = next(ast.literal_eval(node.value) for node in tree.body
-                if isinstance(node, ast.Assign)
-                and any(isinstance(t, ast.Name) and t.id == "bl_info" for t in node.targets))
-    version = ".".join(map(str, info["version"]))
+    package = ROOT / "selected_dimensions"
+    manifest_path = package / "blender_manifest.toml"
+    manifest = tomllib.loads(manifest_path.read_text(encoding="utf-8"))
+    version = manifest["version"]
     if tag and tag != f"v{version}":
-        raise SystemExit(f"Tag {tag!r} does not match add-on version v{version}")
-    compile(source.read_text(encoding="utf-8-sig"), str(source), "exec")
-    out = ROOT / "dist" / f"selected_dimensions-{version}.zip"
+        raise SystemExit(f"Tag {tag!r} does not match extension version v{version}")
+    source = package / "__init__.py"
+    compile(source.read_text(encoding="utf-8"), str(source), "exec")
+    out = ROOT / "dist" / f"{manifest['id']}-{version}.zip"
     out.parent.mkdir(exist_ok=True)
-    files = [(source, "selected_dimensions/__init__.py"),
-             (ROOT / "LICENSE", "selected_dimensions/LICENSE")]
+    # Extension metadata and entry point belong at the archive root.
+    files = [(manifest_path, "blender_manifest.toml"),
+             (source, "__init__.py"), (ROOT / "LICENSE", "LICENSE")]
     with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_DEFLATED) as archive:
         for path, name in files:
             item = zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
@@ -36,5 +36,5 @@ def build(tag=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--tag", help="Require a matching release tag, e.g. v0.1.0")
+    parser.add_argument("--tag", help="Require the release tag to match the manifest version")
     build(parser.parse_args().tag)

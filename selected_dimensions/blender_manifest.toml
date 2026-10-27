@@ -1,0 +1,15 @@
+schema_version = "1.0.0"
+id = "selected_dimensions"
+version = "0.2.0"
+name = "Selected Dimensions"
+tagline = "Measure selected objects in local or world space"
+maintainer = "HenDaSheng"
+type = "add-on"
+website = "https://github.com/hendasheng/selected-dimensions-blender-addon"
+tags = ["3D View"]
+blender_version_min = "5.0.0"
+license = ["SPDX:MIT"]
+copyright = ["2026 HenDaSheng"]
+
+[build]
+paths_exclude_pattern = ["__pycache__/", "/.git/", "/*.zip"]

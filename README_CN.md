@@ -2,7 +2,7 @@
 
 ![选中物体尺寸](docs/images/selected-dimensions-blender-addon-cn.png)
 
-Blender 插件：在三维视图中显示选中物体和集合实例的长、宽、高。
+Blender 扩展：在三维视图中显示选中物体和集合实例的长、宽、高。
 
 [English](README.md)
 
@@ -20,8 +20,10 @@ Blender 插件：在三维视图中显示选中物体和集合实例的长、宽
 
 1. 前往 [Releases](https://github.com/hendasheng/selected-dimensions-blender-addon/releases)。
 2. 下载最新 Release 中以 `selected_dimensions-` 开头的插件安装包（ZIP）。
-3. 在 Blender 打开「编辑 → 偏好设置 → 插件 → 从磁盘安装」。
-4. 选择插件 ZIP 并启用 `Selected Dimensions`。
+3. 在 Blender 打开「编辑 → 偏好设置 → 获取扩展」，从右上角菜单选择「从磁盘安装」。
+4. 选择扩展 ZIP 并启用 `Selected Dimensions`。
+
+如果安装过旧式版本，请先关闭尺寸显示，并在「插件」中禁用、卸载旧版，再安装新版，避免重复注册。
 
 请下载插件安装包，不要使用 GitHub 自动生成的 Source code ZIP。
 

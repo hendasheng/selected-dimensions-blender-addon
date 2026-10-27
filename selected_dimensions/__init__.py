@@ -1,12 +1,3 @@
-bl_info = {
-    "name": "Selected Dimensions",
-    "author": "HenDaSheng",
-    "version": (0, 1, 0),
-    "blender": (5, 0, 0),
-    "location": "3D View > Sidebar > Dimensions",
-    "description": "Measure selected objects and instances in local or world space using scene units",
-    "category": "3D View",
-}
 import bpy, gpu, blf, time
 import numpy as np
 from mathutils import Vector, Matrix
@@ -233,7 +224,7 @@ class SD_PT_panel(bpy.types.Panel):
 
 classes=(SD_OT_show,SD_OT_hide,SD_PT_panel)
 def register():
-    bpy.app.translations.register(__name__,TRANSLATIONS)
+    bpy.app.translations.register(__package__,TRANSLATIONS)
     for cls in classes: bpy.utils.register_class(cls)
     bpy.types.WindowManager.sd_axis_space=bpy.props.EnumProperty(name='Coordinate Space',items=[('LOCAL','Local','Measure along the object local X, Y and Z axes'),('WORLD','World','Measure the bounding box along the world X, Y and Z axes')],default='WORLD')
     bpy.types.WindowManager.sd_font_size=bpy.props.IntProperty(name='Font Size',default=17,min=10,max=40)
@@ -243,7 +234,7 @@ def register():
 
 def unregister():
     stop()
-    bpy.app.translations.unregister(__name__)
+    bpy.app.translations.unregister(__package__)
     if before_load in bpy.app.handlers.load_pre: bpy.app.handlers.load_pre.remove(before_load)
     for name in ('sd_axis_space','sd_font_size','sd_decimals','sd_refresh'):
         if hasattr(bpy.types.WindowManager,name): delattr(bpy.types.WindowManager,name)

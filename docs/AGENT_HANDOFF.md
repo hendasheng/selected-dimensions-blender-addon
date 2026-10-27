@@ -6,8 +6,8 @@
 
 - 名称：Selected Dimensions。
 - GitHub：hendasheng/selected-dimensions-blender-addon。
-- 唯一版本来源：selected_dimensions/__init__.py 的 bl_info。
-- 当前初始版本：0.1.0（用户称为 0.1，按三段式规范化）。
+- 唯一版本来源：selected_dimensions/blender_manifest.toml 的 version。
+- 当前版本：0.2.0，迁移为 Blender Extension。0.1.0 为历史 Legacy Add-on。
 - main 与 v0.1.0 标签均已推送；标签触发了发布流程，但尚未核实 Actions 的最终状态或 Release 资产。
 - 头图来自用户提供的中英文图片，已放入 docs/images/ 并分别引用。
 - 本地仓库目录名称必须保持 selected-dimensions-blender-addon，不再创建带 -git 后缀的并行副本。
@@ -36,7 +36,7 @@
 ## 文件结构
 
 - selected_dimensions/__init__.py：插件、界面、翻译、尺寸计算和回调管理。
-- scripts/build.py：仅依赖标准库的构建脚本，从 bl_info 读取版本并验证标签。
+- scripts/build.py：仅依赖标准库的构建脚本，从 blender_manifest.toml 读取版本并验证标签。
 - scripts/test_blender.py：Blender 后台功能验证。
 - .github/workflows/release.yml：版本标签或手动触发的自动打包流程。
 - docs/images/：用户提供的文档头图。
@@ -48,9 +48,9 @@
 
     python scripts/build.py
 
-输出为 dist/selected_dimensions-<version>.zip。ZIP 只含 selected_dimensions/ 下的插件源文件及 LICENSE，不包含缓存、测试或文档图片。
+输出为 dist/selected_dimensions-<version>.zip。ZIP 根目录包含 blender_manifest.toml、__init__.py 及 LICENSE（不再包含外层 selected_dimensions/ 目录），不包含缓存、测试或文档图片。
 
-发布前：修改 bl_info 的版本号，执行测试与构建，提交并推送 main，再推送与版本一致的 v<version> 标签。不要移动既有发布标签。纯文档变更不需要修改插件版本或重发安装包。
+发布前：修改 blender_manifest.toml 的 version，执行测试与构建，提交并推送 main，再推送与版本一致的 v<version> 标签。不要移动既有发布标签。纯文档变更不需要修改插件版本或重发安装包。
 
 GitHub Actions 校验标签版本，上传工作流构建产物，并创建/更新相应 Release 的插件 ZIP。workflow_dispatch 手动运行会生成构建产物，只有标签运行会发布 Release。
 
@@ -62,3 +62,21 @@ GitHub Actions 校验标签版本，上传工作流构建产物，并创建/更�
 - GitHub 连接器曾出现 transport 错误，本地 Git 可用；API 查询曾受代理访问限制。最终发布状态需重新确认，不能用成功推送标签代替发布成功。
 - 复杂实例更新仍可能有计算成本；缓存减少视图交互时的重复开销。
 - 世界坐标模式目前将普通对象的局部包围盒变换到世界后再求轴对齐范围；对旋转的不规则几何体，它可能比直接按所有顶点求世界范围更大。若继续修复实测精度，需要增加旋转不规则网格回归测试并权衡性能。
+
+## Extension 迁移（0.2.0）
+
+- 使用 selected_dimensions/blender_manifest.toml 作为唯一元数据和版本来源；移除 bl_info。
+- 清单声明 maintainer=HenDaSheng、仓库网站、最低 Blender 5.0.0 及沿用的 MIT 许可证，不申请网络或文件权限。
+- 翻译注册使用 __package__，支持 bl_ext.<repository>.selected_dimensions 命名空间。
+- build.py 使用 Python 3.11+ tomllib，生成根目录清单格式的 Extension 安装包。
+- README 中英文同步迁移安装步骤，提醒先卸载旧式版本；不要写死版本号。
+- 发布前运行 Blender 官方 extension validate，且在隔离的扩展仓库中安装 ZIP、启用、测试、卸载。不能只用普通 import 替代扩展安装验证。
+- 当前工作目录已迁移到 Documents/ChatGPT/Blender；旧 Codex 工作目录仅为历史副本，不继续写入。
+
+## 0.2.0 验证记录
+
+- Blender 5.0.0、5.2.0 LTS：官方 extension validate 校验通过。
+- 在各自隔离的本地扩展仓库中，使用 package_install_files 安装 ZIP、启用 bl_ext.sd_extension_test.selected_dimensions、执行功能测试并卸载，全部通过。
+- 测试覆盖清单版本/网站/维护者、命名空间、中英文、坐标、单位、实例、默认状态和重复启停。
+- scripts/test_package.py 验证 ZIP 根结构、清单与源码一致及错误标签拒绝；已通过。
+- 自动发布工作流新增包结构验证；发布状态待推送后确认。

@@ -2,7 +2,7 @@
 
 ![Selected Dimensions](docs/images/selected-dimensions-blender-addon-en.png)
 
-Blender add-on that displays the length, width and height of selected objects and collection instances in the 3D View.
+Blender extension that displays the length, width and height of selected objects and collection instances in the 3D View.
 
 [中文文档](README_CN.md)
 
@@ -20,8 +20,10 @@ Blender add-on that displays the length, width and height of selected objects an
 
 1. Go to [Releases](https://github.com/hendasheng/selected-dimensions-blender-addon/releases).
 2. Download the add-on ZIP starting with `selected_dimensions-` from the latest release.
-3. In Blender, open Edit > Preferences > Add-ons > Install from Disk.
-4. Select the add-on ZIP and enable Selected Dimensions.
+3. In Blender, open Edit > Preferences > Get Extensions, then choose Install from Disk from the top-right menu.
+4. Select the extension ZIP and enable Selected Dimensions.
+
+If you installed the legacy add-on, hide its dimensions, then disable and uninstall it under Add-ons before installing the extension to avoid duplicate registration.
 
 Download the add-on package, not GitHub's automatically generated Source code ZIP.
 

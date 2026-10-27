@@ -15,5 +15,5 @@ Read docs/AGENT_HANDOFF.md before changing this repository. Keep it current when
 
 - Default dimensions off; default world coordinates.
 - Preserve selection-only measurements, collection-instance support, scene units, Chinese/English UI and caching.
-- bl_info in selected_dimensions/__init__.py is the single version source. Tags must match vMAJOR.MINOR.PATCH.
+- selected_dimensions/blender_manifest.toml is the single version source. Tags must match vMAJOR.MINOR.PATCH. Do not restore legacy bl_info metadata. Extension archives must have blender_manifest.toml and __init__.py at their root.
 - Do not move published tags or claim GitHub Actions / Releases succeeded without observing the result.
