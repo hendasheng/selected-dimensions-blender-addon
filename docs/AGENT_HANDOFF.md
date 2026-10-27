@@ -1,0 +1,64 @@
+# Agent Handoff
+
+本文件用于后续 Agent / 维护者衔接上下文。用户文档只保留面向使用者的信息。
+
+## 仓库与当前状态
+
+- 名称：Selected Dimensions。
+- GitHub：hendasheng/selected-dimensions-blender-addon。
+- 唯一版本来源：selected_dimensions/__init__.py 的 bl_info。
+- 当前初始版本：0.1.0（用户称为 0.1，按三段式规范化）。
+- main 与 v0.1.0 标签均已推送；标签触发了发布流程，但尚未核实 Actions 的最终状态或 Release 资产。
+- 头图来自用户提供的中英文图片，已放入 docs/images/ 并分别引用。
+- 本地仓库目录名称必须保持 selected-dimensions-blender-addon，不再创建带 -git 后缀的并行副本。
+
+## 已确认的产品需求
+
+- 运行或安装后默认不显示尺寸，用户点击 Show Dimensions 才启用。
+- 只标注当前选中物体；多选分别标注；取消选择隐藏对应标注。
+- 支持集合实例，以选中实例整体作为测量对象。
+- 默认世界坐标，可切换物体自身坐标。
+- 单位及单位比例跟随场景；界面语言跟随 Blender，提供英文和简体中文翻译。
+- 标注是视图叠加，不增加场景文字/线条，不参与渲染。
+- 字号、小数位、重算间隔可配置。模型变化时重算，旋转视图时复用缓存。
+- 打开文件、重复开关、卸载插件时正确移除回调，避免残留或 null handler 错误。
+
+## 文档规则与历史问题
+
+- README_CN.md 为中文源文档；每次同步维护英文 README.md，结构和含义一致。
+- 用户下载指引不得写死某个版本或 ZIP 完整文件名。统一指向 Releases，描述 selected_dimensions- 开头的安装包。
+- 不引导用户下载 GitHub 自动生成的 Source code ZIP。
+- 兼容声明统一为 Blender 5+；实测版本另记在本文件，不混为全版本验证。
+- 构建、发布、实现细节、回调历史问题和 Agent 上下文不放入 README。
+- 类似易过期信息（版本、标签、构建文件名、本机路径、测试记录）集中于版本元数据或本文件；不得在用户文档多处重复维护。
+- 提交前同时检查两份 README 是否有写死版本、失效图片引用、中英文不对齐及面向维护者的内容。
+
+## 文件结构
+
+- selected_dimensions/__init__.py：插件、界面、翻译、尺寸计算和回调管理。
+- scripts/build.py：仅依赖标准库的构建脚本，从 bl_info 读取版本并验证标签。
+- scripts/test_blender.py：Blender 后台功能验证。
+- .github/workflows/release.yml：版本标签或手动触发的自动打包流程。
+- docs/images/：用户提供的文档头图。
+- LICENSE：参照用户现有 Batch Asset Export 项目，采用 MIT；作者 HenDaSheng。
+
+## 构建与发布
+
+本地构建：
+
+    python scripts/build.py
+
+输出为 dist/selected_dimensions-<version>.zip。ZIP 只含 selected_dimensions/ 下的插件源文件及 LICENSE，不包含缓存、测试或文档图片。
+
+发布前：修改 bl_info 的版本号，执行测试与构建，提交并推送 main，再推送与版本一致的 v<version> 标签。不要移动既有发布标签。纯文档变更不需要修改插件版本或重发安装包。
+
+GitHub Actions 校验标签版本，上传工作流构建产物，并创建/更新相应 Release 的插件 ZIP。workflow_dispatch 手动运行会生成构建产物，只有标签运行会发布 Release。
+
+## 验证记录与边界
+
+- 已在本机 Blender 5.0.0 和 5.2.0 LTS 后台验证：注册/卸载、重复显示/关闭、打开文件前清理、默认关闭/世界坐标、选择变化、旋转缩放模型、集合实例、物体/世界坐标切换、公英制和单位比例、中英文切换。
+- 测试命令：blender --background --factory-startup --python scripts/test_blender.py。
+- 本地构建及 ZIP 结构已验证。兼容目标为 Blender 5+，不表示已测试每个 5.x 版本。
+- GitHub 连接器曾出现 transport 错误，本地 Git 可用；API 查询曾受代理访问限制。最终发布状态需重新确认，不能用成功推送标签代替发布成功。
+- 复杂实例更新仍可能有计算成本；缓存减少视图交互时的重复开销。
+- 世界坐标模式目前将普通对象的局部包围盒变换到世界后再求轴对齐范围；对旋转的不规则几何体，它可能比直接按所有顶点求世界范围更大。若继续修复实测精度，需要增加旋转不规则网格回归测试并权衡性能。
